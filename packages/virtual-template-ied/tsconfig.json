@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "module": "ESNext",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "lib": ["es2017", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true,
+    "importHelpers": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "declaration": true,
+    "incremental": true
+  },
+  "include": ["src/*.ts"]
+}

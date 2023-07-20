@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Material+Icons&display=block"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style></style>
+  </head>
+  <body>
+    <div id="demo"></div>
+
+    <script type="module">
+      import { html, render, css } from 'lit';
+      import '../dist/OscdDialog.js';
+
+      const icon = 'edit';
+      render(
+        html`<oscd-dialog></oscd-dialog> `,
+        document.querySelector('#demo')
+      );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+
+    "module": "CommonJS",
+
+    "strict": true,
+
+    "skipLibCheck": true,
+
+    "rootDir": "./src",
+
+    "outDir": "./dist",
+
+    "declaration": true,
+
+    "tsBuildInfoFile": ".tsbuildinfo",
+
+    "incremental": true
+  }
+}
