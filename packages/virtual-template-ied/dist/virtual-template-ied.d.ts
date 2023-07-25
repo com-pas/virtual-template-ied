@@ -3,6 +3,7 @@ import { Dialog } from '@material/mwc-dialog';
 import '@material/mwc-list/mwc-list-item';
 import { CheckListItem } from '@material/mwc-list/mwc-check-list-item';
 import '@material/mwc-list/mwc-radio-list-item';
+import '@openscd/oscd-textfield';
 import '@openscd/oscd-filtered-list';
 export type FunctionElementDescription = {
     uniqueName: string;

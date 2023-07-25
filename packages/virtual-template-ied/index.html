@@ -1,29 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta name="Description" content="Put your description here." />
-    <base href="/" />
+<title>Virtual Template IED Demo</title>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&family=Roboto:wght@300;400;500&display=swap"
+/>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Material+Icons&display=block"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+  rel="stylesheet"
+/>
+<script>
+  const _customElementsDefine = window.customElements.define;
+  window.customElements.define = (name, cl, conf) => {
+    if (!customElements.get(name)) {
+      _customElementsDefine.call(window.customElements, name, cl, conf);
+    }
+  };
+</script>
+<open-scd
+  plugins='{"menu": [{"name": "Create Virtual IED", "icon": "developer_board", "active": true, "src": "/dist/virtual-template-ied.js"}, {"name": "Open File", "translations": {"de": "Datei öffnen"}, "icon": "folder_open", "active": true, "src": "https://openscd.github.io/oscd-open/oscd-open.js"}, {"name": "Save Project", "icon": "save", "active": true, "src": "https://openscd.github.io/oscd-save/oscd-save.js"}],"editor": []}'
+></open-scd>
 
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-        background-color: #ededed;
-      }
-    </style>
-    <title>virtual-template-ied</title>
-  </head>
+<script type="module">
+  import '@openscd/open-scd-core/open-scd.js';
 
-  <body>
-    <virtual-template-ied></virtual-template-ied>
+  const editor = document.querySelector('open-scd');
+  const params = new URL(document.location).searchParams;
+  for (const [name, value] of params) {
+    editor.setAttribute(name, value);
+  }
+</script>
+<style>
+  * {
+    margin: 0px;
+    padding: 0px;
+    --mdc-icon-font: 'Material Symbols Outlined';
+  }
 
-    <script type="module" src="./dist/virtual-template-ied.js"></script>
-  </body>
-</html>
+  body {
+    background: white;
+  }
+</style>

@@ -1,30 +1,24 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.idNamingIdentity = exports.singletonIdentity = exports.namingIdentity = exports.sCLIdentity = exports.protNsIdentity = exports.enumValIdentity = exports.pIdentity = exports.physConnIdentity = exports.controlBlockIdentity = exports.connectedAPIdentity = exports.valIdentity = exports.ixNamingIdentity = exports.clientLNIdentity = exports.lNIdentity = exports.extRefIdentity = exports.fCDAIdentity = exports.iEDNameIdentity = exports.lDeviceIdentity = exports.associationIdentity = exports.kDCIdentity = exports.lNodeIdentity = exports.terminalIdentity = exports.hitemIdentity = exports.identity = void 0;
-const scldata_js_1 = require("../utils/scldata.js");
-const scltags_js_1 = require("./scltags.js");
+import { isSCLTag } from '../utils/scldata.js';
+import { tags } from './scltags.js';
 /** @returns a string uniquely identifying `e` in its document, or NaN if `e`
  * is unidentifiable. */
-function identity(e) {
+export function identity(e) {
     if (e === null)
         return NaN;
     if (e.closest('Private'))
         return NaN;
     const tag = e.tagName;
-    if ((0, scldata_js_1.isSCLTag)(tag))
-        return scltags_js_1.tags[tag].identity(e);
+    if (isSCLTag(tag))
+        return tags[tag].identity(e);
     return NaN;
 }
-exports.identity = identity;
-function hitemIdentity(e) {
+export function hitemIdentity(e) {
     return `${e.getAttribute('version')}\t${e.getAttribute('revision')}`;
 }
-exports.hitemIdentity = hitemIdentity;
-function terminalIdentity(e) {
+export function terminalIdentity(e) {
     return `${identity(e.parentElement)}>${e.getAttribute('connectivityNode')}`;
 }
-exports.terminalIdentity = terminalIdentity;
-function lNodeIdentity(e) {
+export function lNodeIdentity(e) {
     const [iedName, ldInst, prefix, lnClass, lnInst, lnType] = [
         'iedName',
         'ldInst',
@@ -37,21 +31,17 @@ function lNodeIdentity(e) {
         return `${identity(e.parentElement)}>(${lnClass} ${lnType})`;
     return `${iedName} ${ldInst || '(Client)'}/${prefix !== null && prefix !== void 0 ? prefix : ''} ${lnClass} ${lnInst !== null && lnInst !== void 0 ? lnInst : ''}`;
 }
-exports.lNodeIdentity = lNodeIdentity;
-function kDCIdentity(e) {
+export function kDCIdentity(e) {
     return `${identity(e.parentElement)}>${e.getAttribute('iedName')} ${e.getAttribute('apName')}`;
 }
-exports.kDCIdentity = kDCIdentity;
-function associationIdentity(e) {
+export function associationIdentity(e) {
     var _a;
     return `${identity(e.parentElement)}>${(_a = e.getAttribute('associationID')) !== null && _a !== void 0 ? _a : ''}`;
 }
-exports.associationIdentity = associationIdentity;
-function lDeviceIdentity(e) {
+export function lDeviceIdentity(e) {
     return `${identity(e.closest('IED'))}>>${e.getAttribute('inst')}`;
 }
-exports.lDeviceIdentity = lDeviceIdentity;
-function iEDNameIdentity(e) {
+export function iEDNameIdentity(e) {
     const iedName = e.textContent;
     const [apRef, ldInst, prefix, lnClass, lnInst] = [
         'apRef',
@@ -62,8 +52,7 @@ function iEDNameIdentity(e) {
     ].map(name => e.getAttribute(name));
     return `${identity(e.parentElement)}>${iedName} ${apRef || ''} ${ldInst || ''}/${prefix !== null && prefix !== void 0 ? prefix : ''} ${lnClass !== null && lnClass !== void 0 ? lnClass : ''} ${lnInst !== null && lnInst !== void 0 ? lnInst : ''}`;
 }
-exports.iEDNameIdentity = iEDNameIdentity;
-function fCDAIdentity(e) {
+export function fCDAIdentity(e) {
     const [ldInst, prefix, lnClass, lnInst, doName, daName, fc, ix] = [
         'ldInst',
         'prefix',
@@ -77,8 +66,7 @@ function fCDAIdentity(e) {
     const dataPath = `${ldInst}/${prefix !== null && prefix !== void 0 ? prefix : ''} ${lnClass} ${lnInst !== null && lnInst !== void 0 ? lnInst : ''}.${doName} ${daName || ''}`;
     return `${identity(e.parentElement)}>${dataPath} (${fc}${ix ? ` [${ix}]` : ''})`;
 }
-exports.fCDAIdentity = fCDAIdentity;
-function extRefIdentity(e) {
+export function extRefIdentity(e) {
     if (!e.parentElement)
         return NaN;
     const parentIdentity = identity(e.parentElement);
@@ -109,13 +97,11 @@ function extRefIdentity(e) {
     // eslint-disable-next-line no-useless-concat
     intAddr ? '@' + `${intAddr}` : ''}`;
 }
-exports.extRefIdentity = extRefIdentity;
-function lNIdentity(e) {
+export function lNIdentity(e) {
     const [prefix, lnClass, inst] = ['prefix', 'lnClass', 'inst'].map(name => e.getAttribute(name));
     return `${identity(e.parentElement)}>${prefix !== null && prefix !== void 0 ? prefix : ''} ${lnClass} ${inst}`;
 }
-exports.lNIdentity = lNIdentity;
-function clientLNIdentity(e) {
+export function clientLNIdentity(e) {
     const [apRef, iedName, ldInst, prefix, lnClass, lnInst] = [
         'apRef',
         'iedName',
@@ -126,13 +112,11 @@ function clientLNIdentity(e) {
     ].map(name => e.getAttribute(name));
     return `${identity(e.parentElement)}>${iedName} ${apRef || ''} ${ldInst}/${prefix !== null && prefix !== void 0 ? prefix : ''} ${lnClass} ${lnInst}`;
 }
-exports.clientLNIdentity = clientLNIdentity;
-function ixNamingIdentity(e) {
+export function ixNamingIdentity(e) {
     const [name, ix] = ['name', 'ix'].map(naming => e.getAttribute(naming));
     return `${identity(e.parentElement)}>${name}${ix ? `[${ix}]` : ''}`;
 }
-exports.ixNamingIdentity = ixNamingIdentity;
-function valIdentity(e) {
+export function valIdentity(e) {
     if (!e.parentElement)
         return NaN;
     const sGroup = e.getAttribute('sGroup');
@@ -141,18 +125,15 @@ function valIdentity(e) {
         .findIndex(child => child.isSameNode(e));
     return `${identity(e.parentElement)}>${sGroup ? `${sGroup}.` : ''} ${index}`;
 }
-exports.valIdentity = valIdentity;
-function connectedAPIdentity(e) {
+export function connectedAPIdentity(e) {
     const [iedName, apName] = ['iedName', 'apName'].map(name => e.getAttribute(name));
     return `${iedName} ${apName}`;
 }
-exports.connectedAPIdentity = connectedAPIdentity;
-function controlBlockIdentity(e) {
+export function controlBlockIdentity(e) {
     const [ldInst, cbName] = ['ldInst', 'cbName'].map(name => e.getAttribute(name));
     return `${ldInst} ${cbName}`;
 }
-exports.controlBlockIdentity = controlBlockIdentity;
-function physConnIdentity(e) {
+export function physConnIdentity(e) {
     if (!e.parentElement)
         return NaN;
     if (!e.parentElement.querySelector('PhysConn[type="RedConn"]'))
@@ -164,8 +145,7 @@ function physConnIdentity(e) {
         return NaN;
     return `${identity(e.parentElement)}>${pcType}`;
 }
-exports.physConnIdentity = physConnIdentity;
-function pIdentity(e) {
+export function pIdentity(e) {
     if (!e.parentElement)
         return NaN;
     const eParent = e.parentElement;
@@ -177,30 +157,23 @@ function pIdentity(e) {
         .findIndex(child => child.isSameNode(e));
     return `${identity(e.parentElement)}>${eType} [${index}]`;
 }
-exports.pIdentity = pIdentity;
-function enumValIdentity(e) {
+export function enumValIdentity(e) {
     return `${identity(e.parentElement)}>${e.getAttribute('ord')}`;
 }
-exports.enumValIdentity = enumValIdentity;
-function protNsIdentity(e) {
+export function protNsIdentity(e) {
     return `${identity(e.parentElement)}>${e.getAttribute('type') || '8-MMS'}\t${e.textContent}`;
 }
-exports.protNsIdentity = protNsIdentity;
-function sCLIdentity() {
+export function sCLIdentity() {
     return '';
 }
-exports.sCLIdentity = sCLIdentity;
-function namingIdentity(e) {
+export function namingIdentity(e) {
     return e.parentElement.tagName === 'SCL'
         ? e.getAttribute('name')
         : `${identity(e.parentElement)}>${e.getAttribute('name')}`;
 }
-exports.namingIdentity = namingIdentity;
-function singletonIdentity(e) {
+export function singletonIdentity(e) {
     return identity(e.parentElement).toString();
 }
-exports.singletonIdentity = singletonIdentity;
-function idNamingIdentity(e) {
+export function idNamingIdentity(e) {
     return `#${e.id}`;
 }
-exports.idNamingIdentity = idNamingIdentity;

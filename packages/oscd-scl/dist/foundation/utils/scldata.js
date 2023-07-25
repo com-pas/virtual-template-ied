@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.getReference = exports.relatives = exports.isSCLTag = void 0;
 const tAbstractConductingEquipment = [
     'TransformerWinding',
     'ConductingEquipment',
@@ -146,10 +143,9 @@ const sCLTags = [
     'SecPerSamples',
 ];
 const tagSet = new Set(sCLTags);
-function isSCLTag(tag) {
+export function isSCLTag(tag) {
     return tagSet.has(tag);
 }
-exports.isSCLTag = isSCLTag;
 const tBaseNameSequence = ['Text', 'Private'];
 const tNamingSequence = [...tBaseNameSequence];
 const tUnNamingSequence = [...tBaseNameSequence];
@@ -190,7 +186,7 @@ const tAbstractEqFuncSubFuncSequence = [
     'GeneralEquipment',
     'EqSubFunction',
 ];
-exports.relatives = {
+export const relatives = {
     AccessControl: {
         parents: ['LDevice'],
         children: [],
@@ -808,7 +804,7 @@ exports.relatives = {
         children: [...tEquipmentContainerSequence, 'Voltage', 'Bay', 'Function'],
     },
 };
-function getReference(parent, tag) {
+export function getReference(parent, tag) {
     var _a, _b, _c;
     const parentTag = parent.tagName;
     const children = Array.from(parent.children);
@@ -816,7 +812,7 @@ function getReference(parent, tag) {
         parentTag === 'SettingGroups' ||
         !isSCLTag(parentTag))
         return (_a = children.find(child => child.tagName === tag)) !== null && _a !== void 0 ? _a : null;
-    const sequence = (_c = (_b = exports.relatives[parentTag]) === null || _b === void 0 ? void 0 : _b.children) !== null && _c !== void 0 ? _c : [];
+    const sequence = (_c = (_b = relatives[parentTag]) === null || _b === void 0 ? void 0 : _b.children) !== null && _c !== void 0 ? _c : [];
     let index = sequence.findIndex(element => element === tag);
     if (index < 0)
         return null;
@@ -829,4 +825,3 @@ function getReference(parent, tag) {
     }
     return nextSibling !== null && nextSibling !== void 0 ? nextSibling : null;
 }
-exports.getReference = getReference;

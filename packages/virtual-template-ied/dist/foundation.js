@@ -1,5 +1,4 @@
-import { createElement, identity } from '@openscd/oscd-scl';
-import { getChildElementsByTagName } from './helpers.js';
+import { createElement, identity, getChildElementsByTagName } from '@openscd/oscd-scl';
 const functionTypeElementTags = [
     'Function',
     'SubFunction',

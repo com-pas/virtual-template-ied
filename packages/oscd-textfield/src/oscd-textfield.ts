@@ -100,6 +100,7 @@ export class OscdTextfield extends LitElement {
 
   @property({
     type: Boolean,
+    noAccessor: true 
   })
   disabled = false;
 
@@ -220,7 +221,7 @@ export class OscdTextfield extends LitElement {
       this.multiplierMenu.anchor = this.multiplierButton ?? null;
 
     // eslint-disable-next-line no-self-assign
-    if (!this.maybeValue) {
+    if (this.null && !this.maybeValue) {
       this.disable();
     }
   }

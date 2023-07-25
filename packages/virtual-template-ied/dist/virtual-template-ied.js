@@ -1,4 +1,5 @@
 import { __decorate, __metadata } from "tslib";
+/* eslint-disable import/no-duplicates */
 /* eslint-disable no-useless-return */
 /* eslint-disable class-methods-use-this */
 import { css, html, LitElement } from 'lit';
@@ -7,10 +8,10 @@ import { property, query, queryAll, state } from 'lit/decorators.js';
 import { Dialog } from '@material/mwc-dialog';
 import '@material/mwc-list/mwc-list-item';
 import '@material/mwc-list/mwc-radio-list-item';
+import '@openscd/oscd-textfield';
 import '@openscd/oscd-filtered-list';
 import { newEditEvent } from '@openscd/open-scd-core';
-import { identity, selector, getReference } from '@openscd/oscd-scl';
-import { getChildElementsByTagName } from './helpers.js';
+import { identity, selector, getReference, getChildElementsByTagName } from '@openscd/oscd-scl';
 import { getFunctionNamingPrefix, getNonLeafParent, getSpecificationIED, getUniqueFunctionName } from './foundation.js';
 /** converts FunctionElementDescription's to LDeviceDescription's */
 function getLDeviceDescriptions(functions, selectedLNodes, selectedLLN0s) {
@@ -57,8 +58,10 @@ function groupLNodesToFunctions(lNodes) {
     return functionElements;
 }
 export default class VirtualTemplateIED extends LitElement {
-    doc;
-    editCount = -1;
+    constructor() {
+        super(...arguments);
+        this.editCount = -1;
+    }
     get isValidManufacturer() {
         const manufacturer = this.dialog?.querySelector('oscd-textfield[label="manufacturer"]').value;
         return (manufacturer && manufacturer !== '') || false;
@@ -81,10 +84,8 @@ export default class VirtualTemplateIED extends LitElement {
     get lLN0s() {
         return Array.from(this.doc.querySelectorAll('LNodeType[lnClass="LLN0"]'));
     }
-    dialog;
-    selectedLNodeItems;
     async run() {
-        this.dialog.open = true;
+        this.dialog?.show();
     }
     onPrimaryAction(functions) {
         const selectedLNode = Array.from(this.dialog.querySelectorAll('mwc-check-list-item[selected]:not([disabled])') ?? []).map(selectedItem => this.doc.querySelector(selector('LNode', selectedItem.value)));
@@ -120,11 +121,11 @@ export default class VirtualTemplateIED extends LitElement {
             return html `<mwc-select
         disabled
         naturalMenuWidth
-        value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
+        .value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
         style="width:100%"
         label="LLN0"
         >${html `<mwc-list-item
-          value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
+          .value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
           >${lNode.getAttribute('lnType')}
         </mwc-list-item>`}</mwc-select
       >`;
@@ -132,9 +133,9 @@ export default class VirtualTemplateIED extends LitElement {
       naturalMenuWidth
       style="width:100%"
       label="LLN0"
-      value="${`${functionID}: ${lLN0Types[0].getAttribute('id')}`}"
+      .value="${`${functionID}: ${lLN0Types[0].getAttribute('id')}`}"
       >${lLN0Types.map(lLN0Type => html `<mwc-list-item
-          value="${`${functionID}: ${lLN0Type.getAttribute('id')}`}"
+          .value="${`${functionID}: ${lLN0Type.getAttribute('id')}`}"
           >${lLN0Type.getAttribute('id')}</mwc-list-item
         >`)}</mwc-select
     >`;
@@ -163,7 +164,7 @@ export default class VirtualTemplateIED extends LitElement {
       ><div>
         <oscd-textfield
           label="manufacturer"
-          .maybeValue=${''}
+          .value=${''}
           required
           @keypress=${() => this.requestUpdate()}
         ></oscd-textfield>
@@ -174,7 +175,7 @@ export default class VirtualTemplateIED extends LitElement {
         ></oscd-textfield>
         <oscd-textfield
           label="AccessPoint name"
-          .maybeValue=${''}
+          .value=${''}
           required
           @keypress=${() => this.requestUpdate()}
         ></oscd-textfield>
@@ -213,7 +214,7 @@ export default class VirtualTemplateIED extends LitElement {
     ></mwc-dialog>`;
     }
     // TODO: Use lit localize for buttons and labels
-    static styles = css `
+    static { this.styles = css `
     mwc-dialog {
       --mdc-dialog-max-width: 92vw;
     }
@@ -227,7 +228,7 @@ export default class VirtualTemplateIED extends LitElement {
       display: block;
       margin-top: 16px;
     }
-  `;
+  `; }
 }
 __decorate([
     property({ attribute: false }),

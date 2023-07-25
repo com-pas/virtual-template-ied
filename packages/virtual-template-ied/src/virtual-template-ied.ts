@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable no-useless-return */
 /* eslint-disable class-methods-use-this */
 import { css, html, LitElement, TemplateResult } from 'lit';
@@ -11,11 +12,17 @@ import { CheckListItem } from '@material/mwc-list/mwc-check-list-item';
 import '@material/mwc-list/mwc-radio-list-item';
 import { Select } from '@material/mwc-select';
 
+import '@openscd/oscd-textfield';
+import { OscdTextfield } from '@openscd/oscd-textfield';
+
 import '@openscd/oscd-filtered-list';
 import { newEditEvent } from '@openscd/open-scd-core';
-import { OscdTextfield } from '@openscd/oscd-textfield';
-import { identity, selector, getReference } from '@openscd/oscd-scl';
-import { getChildElementsByTagName } from './helpers.js';
+import {
+  identity,
+  selector,
+  getReference,
+  getChildElementsByTagName
+} from '@openscd/oscd-scl';
 import {
   getFunctionNamingPrefix,
   getNonLeafParent,
@@ -147,7 +154,7 @@ export default class VirtualTemplateIED extends LitElement {
   selectedLNodeItems?: CheckListItem[];
 
   async run(): Promise<void> {
-    this.dialog.open = true;
+    this.dialog?.show();
   }
 
   private onPrimaryAction(
@@ -211,11 +218,11 @@ export default class VirtualTemplateIED extends LitElement {
       return html`<mwc-select
         disabled
         naturalMenuWidth
-        value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
+        .value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
         style="width:100%"
         label="LLN0"
         >${html`<mwc-list-item
-          value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
+          .value="${`${functionID}: ${lNode.getAttribute('lnType')}`}"
           >${lNode.getAttribute('lnType')}
         </mwc-list-item>`}</mwc-select
       >`;
@@ -224,10 +231,10 @@ export default class VirtualTemplateIED extends LitElement {
       naturalMenuWidth
       style="width:100%"
       label="LLN0"
-      value="${`${functionID}: ${lLN0Types[0].getAttribute('id')}`}"
+      .value="${`${functionID}: ${lLN0Types[0].getAttribute('id')}`}"
       >${lLN0Types.map(
         lLN0Type => html`<mwc-list-item
-          value="${`${functionID}: ${lLN0Type.getAttribute('id')}`}"
+          .value="${`${functionID}: ${lLN0Type.getAttribute('id')}`}"
           >${lLN0Type.getAttribute('id')}</mwc-list-item
         >`
       )}</mwc-select
@@ -264,7 +271,7 @@ export default class VirtualTemplateIED extends LitElement {
       ><div>
         <oscd-textfield
           label="manufacturer"
-          .maybeValue=${''}
+          .value=${''}
           required
           @keypress=${() => this.requestUpdate()}
         ></oscd-textfield>
@@ -275,7 +282,7 @@ export default class VirtualTemplateIED extends LitElement {
         ></oscd-textfield>
         <oscd-textfield
           label="AccessPoint name"
-          .maybeValue=${''}
+          .value=${''}
           required
           @keypress=${() => this.requestUpdate()}
         ></oscd-textfield>
