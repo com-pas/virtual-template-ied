@@ -19,7 +19,15 @@ jobs:
       - name: Install playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Build project
+      - name: Build oscd-textfield
+        working-directory: ./packages/oscd-textfield
+        run: npm run build
+
+      - name: Build oscd-scl
+        working-directory: ./packages/oscd-scl
+        run: npm run build
+
+      - name: Build virtual-template-ied
         working-directory: ./packages/virtual-template-ied
         run: npm run build
 
