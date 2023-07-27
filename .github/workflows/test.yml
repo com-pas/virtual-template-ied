@@ -1,8 +1,8 @@
-name: Test on PR branch
-on: pull_request
+name: Test
+on: push
 
 jobs:
-  test-on-pr-branch:
+  unit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,7 +20,9 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Build project
-        run: npm run-script build
+        working-directory: ./packages/virtual-template-ied
+        run: npm run build
 
-      - name: Run tests
-        run: npm run-script test
+      - name: Run unit tests
+        working-directory: ./packages/virtual-template-ied
+        run: npm run test:unit
