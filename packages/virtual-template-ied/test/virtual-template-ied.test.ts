@@ -4,8 +4,8 @@ import { SinonSpy, spy } from 'sinon';
 
 import { CheckListItem } from '@material/mwc-list/mwc-check-list-item';
 import { OscdTextfield } from '@openscd/oscd-textfield';
-import { Insert, isInsert } from '@openscd/open-scd-core';
-import VirtualTemplateIED from '../src/virtual-template-ied.js';
+import { Edit, Insert, isInsert } from '@openscd/open-scd-core';
+import VirtualTemplateIED from '../dist/virtual-template-ied.js';
 
 describe('Plugin that creates with some user input a virtual template IED - SPECIFICATION', () => {
   if (customElements.get('virtual-template-i-e-d') === undefined)
@@ -23,7 +23,7 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
   let editorAction: SinonSpy;
 
   beforeEach(async () => {
-    doc = await fetch('/test/testfiles/virtualied/specificfromfunctions.ssd')
+    doc = await fetch('/test/testfile/specificfromfunctions.ssd')
       .then(response => response.text())
       .then(str => new DOMParser().parseFromString(str, 'application/xml'));
 
@@ -32,19 +32,20 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
     `);
 
     editorAction = spy();
-    window.addEventListener('editor-action', editorAction);
+    window.addEventListener('oscd-edit', editorAction);
 
     element.run();
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     checkItems = Array.from(
       element.dialog.querySelectorAll('mwc-check-list-item') ?? []
     );
     manufacturer = element.dialog.querySelector<OscdTextfield>(
-      'wizard-textfield[label="manufacturer"]'
+      'oscd-textfield[label="manufacturer"]'
     )!;
     apName = element.dialog.querySelector<OscdTextfield>(
-      'wizard-textfield[label="AccessPoint name"]'
+      'oscd-textfield[label="AccessPoint name"]'
     )!;
 
     primaryAction = <HTMLElement>(
@@ -62,7 +63,6 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
 
   it('does not trigger any actions with missing input fields', () => {
     primaryAction.click();
-
     expect(editorAction).to.not.have.been.called;
   });
 
@@ -81,7 +81,8 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
 
     checkItems[1].selected = true;
 
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     primaryAction.click();
 
@@ -94,12 +95,14 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
 
     checkItems[1].selected = true;
 
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     primaryAction.click();
 
-    const { action } = editorAction.args[0][0].detail;
-    expect(action).to.satisfy(isInsert);
+    const edit: Edit = editorAction.args[0][0].detail;
+    // const { action } = editorAction.args[0][0].detail;
+    expect(edit).to.satisfy(isInsert);
 
     // const createAction = <Insert>action;
     // expect(createAction.checkValidity).to.exist; TODO: Implement checkValidity
@@ -111,12 +114,14 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
 
     manufacturer.value = 'SomeCompanyName';
     apName.value = 'P1';
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     expect(primaryAction).to.have.attribute('disabled');
 
     checkItems[1].selected = true;
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     expect(primaryAction).to.not.have.attribute('disabled');
   });
@@ -129,14 +134,16 @@ describe('Plugin that creates with some user input a virtual template IED - SPEC
     checkItems[10].selected = true;
     checkItems[15].selected = true;
 
-    await element.requestUpdate();
+    element.requestUpdate();
+    await element.updateComplete;
 
     primaryAction.click();
 
-    const { action } = editorAction.args[0][0].detail;
-    expect(action).to.satisfy(isInsert);
+    const edit: Edit = editorAction.args[0][0].detail;
+    // const { action } = editorAction.args[0][0].detail;
+    expect(edit).to.satisfy(isInsert);
 
-    const createAction = <Insert>action;
+    const createAction = <Insert>edit;
     await expect(createAction.node).dom.to.equalSnapshot();
   });
 });

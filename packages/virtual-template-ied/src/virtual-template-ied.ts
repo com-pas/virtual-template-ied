@@ -1,8 +1,16 @@
 /* eslint-disable import/no-duplicates */
 /* eslint-disable no-useless-return */
 /* eslint-disable class-methods-use-this */
-import { css, html, LitElement, TemplateResult } from 'lit';
-import { property, query, queryAll, state } from 'lit/decorators.js';
+import {
+  css,
+  html,
+  LitElement,
+  TemplateResult,
+  property,
+  query,
+  queryAll,
+  state,
+} from 'lit-element';
 
 // import { translate } from 'lit-translate'; ----- TODO: Change dependency to lit-localize and refactor accordingly
 
@@ -21,14 +29,14 @@ import {
   identity,
   selector,
   getReference,
-  getChildElementsByTagName
+  getChildElementsByTagName,
 } from '@openscd/oscd-scl';
 import {
   getFunctionNamingPrefix,
   getNonLeafParent,
   getSpecificationIED,
   getUniqueFunctionName,
-  LDeviceDescription
+  LDeviceDescription,
 } from './foundation.js';
 
 export type FunctionElementDescription = {
@@ -64,9 +72,9 @@ function getLDeviceDescriptions(
               prefix: getFunctionNamingPrefix(lNode),
               lnClass: lNode.getAttribute('lnClass')!,
               inst: lNode.getAttribute('lnInst')!,
-              lnType: lNode.getAttribute('lnType')!
-            }))
-        ]
+              lnType: lNode.getAttribute('lnType')!,
+            })),
+        ],
       });
     }
   });
@@ -92,7 +100,7 @@ function groupLNodesToFunctions(
         lNodes: [lNode],
         lln0: getChildElementsByTagName(parentFunction, 'LNode').find(
           lNode => lNode.getAttribute('lnClass') === 'LLN0'
-        )
+        ),
       };
     }
   });
@@ -100,13 +108,20 @@ function groupLNodesToFunctions(
   return functionElements;
 }
 
+/**
+ * @summary IED generation menu plugin for CoMPAS Open SCD (next)
+ * @tag virtual-template-ied
+ */
 export default class VirtualTemplateIED extends LitElement {
+  /** The document being edited as provided to plugins by [[`OpenSCD`]]. */
   @property({ attribute: false })
   doc!: XMLDocument;
 
+  /** The editCount represents the current position in the edit history. */
   @property({ type: Number })
   editCount = -1;
 
+  /** Returns true if the manufacturer input contains value. */
   @state()
   get isValidManufacturer(): boolean {
     const manufacturer = this.dialog?.querySelector<OscdTextfield>(
@@ -116,6 +131,7 @@ export default class VirtualTemplateIED extends LitElement {
     return (manufacturer && manufacturer !== '') || false;
   }
 
+  /** Returns true if the access point input contains value. */
   @state()
   get isValidApName(): boolean {
     const apName = this.dialog?.querySelector<OscdTextfield>(
@@ -125,12 +141,14 @@ export default class VirtualTemplateIED extends LitElement {
     return (apName && apName !== '') || false;
   }
 
+  /** Returns true if an LNode is selected in the list. */
   @state()
   get someItemsSelected(): boolean {
     if (!this.selectedLNodeItems) return false;
     return !!this.selectedLNodeItems.length;
   }
 
+  /** Returns true if manufacturer and access point fields contain value and if atleast 1 LNode is selected in the list. */
   @state()
   get validPriparyAction(): boolean {
     return (
@@ -138,21 +156,26 @@ export default class VirtualTemplateIED extends LitElement {
     );
   }
 
+  /** Returns an array of Logical Nodes that have no reference to a IED and can therfore be used for the virtual IED. */
   get unreferencedLNodes(): Element[] {
     return Array.from(
       this.doc.querySelectorAll('LNode[iedName="None"]')
     ).filter(lNode => lNode.getAttribute('lnClass') !== 'LLN0');
   }
 
+  /** Returns an array of LLN0 Logical Nodes. */
   get lLN0s(): Element[] {
     return Array.from(this.doc.querySelectorAll('LNodeType[lnClass="LLN0"]'));
   }
 
+  /** The dialog in which the user can create a virtual template IED. */
   @query('mwc-dialog') dialog!: Dialog;
 
+  /** A list of LNode items that are selected. */
   @queryAll('mwc-check-list-item[selected]')
   selectedLNodeItems?: CheckListItem[];
 
+  /** Run method to start the plugin. */
   async run(): Promise<void> {
     this.dialog?.show();
   }
@@ -188,7 +211,7 @@ export default class VirtualTemplateIED extends LitElement {
       manufacturer,
       desc,
       apName,
-      lDevices: getLDeviceDescriptions(functions, selectedLNode, selectedLLN0s)
+      lDevices: getLDeviceDescriptions(functions, selectedLNode, selectedLLN0s),
     });
 
     // checkValidity: () => true disables name check as is the same here: SPECIFICATION
@@ -196,7 +219,7 @@ export default class VirtualTemplateIED extends LitElement {
       newEditEvent({
         parent: this.doc.documentElement,
         node: ied,
-        reference: getReference(this.doc.documentElement, 'IED')
+        reference: getReference(this.doc.documentElement, 'IED'),
         // checkValidity: () => true  TODO: Add checkValidity function ?
       })
     );
@@ -305,7 +328,7 @@ export default class VirtualTemplateIED extends LitElement {
                 functionDescription.lln0
               ),
               ...this.renderLNodes(functionDescription.lNodes, !existValidLLN0),
-              html`<li padded divider role="separator"></li>`
+              html`<li padded divider role="separator"></li>`,
             ]
           )}</oscd-filtered-list
         >

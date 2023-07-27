@@ -25,6 +25,7 @@
 /_site/
 /dist/
 /out-tsc/
+/.tsbuildinfo
 
 storybook-static
 custom-elements.json

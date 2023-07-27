@@ -1,14 +1,25 @@
 // import { playwrightLauncher } from '@web/test-runner-playwright';
 
-const filteredLogs = ['Running in dev mode', 'lit-html is in dev mode'];
+const filteredLogs = [
+  'Running in dev mode',
+  'Lit is in dev mode',
+  'mwc-check-list-item scheduled an update',
+];
 
 export default /** @type {import("@web/test-runner").TestRunnerConfig} */ ({
   /** Test files to run */
-  files: 'out-tsc/test/**/*.test.js',
+  files: 'dist/**/*.test.js',
 
   /** Resolve bare module imports */
   nodeResolve: {
     exportConditions: ['browser', 'development'],
+  },
+  coverageConfig: {
+    exclude: [
+      '**/*/oscd-textfield/**/*',
+      '**/*/node_modules/**/*',
+      '**/*/oscd-scl/**/*',
+    ],
   },
 
   /** Filter out lit dev mode logs */

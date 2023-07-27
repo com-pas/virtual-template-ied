@@ -1,21 +1,21 @@
 import {
   createElement,
   identity,
-  getChildElementsByTagName
+  getChildElementsByTagName,
 } from '@openscd/oscd-scl';
 
 const functionTypeElementTags = [
   'Function',
   'SubFunction',
   'EqFunction',
-  'EqSubFunction'
+  'EqSubFunction',
 ];
 
 const functionTypeSelector = functionTypeElementTags.join(',');
 
 /**
- * @param element - Some element Function, SubFunction, EqFunction or EqSubFunction
- * @returns Whether the element is a leaf function acc. to IEC 61850-6-100
+ * Some element Function, SubFunction, EqFunction or EqSubFunction.
+ * Returns whether the element is a leaf function acc. to IEC 61850-6-100
  * */
 export function isLeafFunction(element: Element | null): boolean {
   if (!element) return false;
@@ -28,7 +28,7 @@ export function isLeafFunction(element: Element | null): boolean {
   );
 }
 
-/** @returns closest non-leaf function type parent element */
+/** Returns closest non-leaf function type parent element */
 export function getNonLeafParent(element: Element | null): Element | null {
   if (!element) return null;
 
@@ -41,7 +41,7 @@ export function getNonLeafParent(element: Element | null): Element | null {
   return directParent;
 }
 
-/** @returns prefix of LNode element acc. to IEC 61850-6-100 */
+/** Returns prefix of LNode element acc. to IEC 61850-6-100 */
 export function getFunctionNamingPrefix(lNode: Element): string {
   const lNodesPrefix = lNode.getAttribute('prefix');
   if (lNodesPrefix) return lNodesPrefix;
@@ -76,6 +76,7 @@ function shortestIdentities(identities: string[]): string[] {
   return identities.map(identity => identity.split('>').join('_'));
 }
 
+/** Returns a unique name for the given element. If the name already exists the parents name will be added as a prefix. This happens recursively until the name is unique. */
 export function getUniqueFunctionName(element: Element): string {
   if (!functionTypeElementTags.includes(element.tagName)) {
     const id = identity(element);
@@ -117,7 +118,7 @@ export type VirtualIEDDescription = {
   lDevices: LDeviceDescription[];
 };
 
-/** @returns schema valid SPECIFICATION type IED based on virtualIED object  */
+/** Returns schema valid SPECIFICATION type IED based on virtualIED object  */
 export function getSpecificationIED(
   ownerDocument: Document,
   virtualIED: VirtualIEDDescription
@@ -125,11 +126,11 @@ export function getSpecificationIED(
   const ied = createElement(ownerDocument, 'IED', {
     name: 'SPECIFICATION',
     desc: virtualIED.desc,
-    manufacturer: virtualIED.manufacturer
+    manufacturer: virtualIED.manufacturer,
   });
 
   const accessPoint = createElement(ownerDocument, 'AccessPoint', {
-    name: virtualIED.apName
+    name: virtualIED.apName,
   });
 
   const server = createElement(ownerDocument, 'Server', {});
@@ -140,7 +141,7 @@ export function getSpecificationIED(
 
   Object.values(virtualIED.lDevices).forEach(lDeviceDesc => {
     const lDevice = createElement(ownerDocument, 'LDevice', {
-      inst: lDeviceDesc.validLdInst
+      inst: lDeviceDesc.validLdInst,
     });
 
     lDeviceDesc.anyLNs.forEach(anyLNDesc => {
@@ -151,7 +152,7 @@ export function getSpecificationIED(
           prefix: anyLNDesc.prefix,
           lnClass: anyLNDesc.lnClass,
           inst: anyLNDesc.inst,
-          lnType: anyLNDesc.lnType
+          lnType: anyLNDesc.lnType,
         }
       );
 
