@@ -36,30 +36,6 @@ npm start
 To run a local development server that serves the basic demo located in `index.html`
 
 
-## `src/foundation.ts`:
-
-### Functions
-
-| Name                      | Description                                                                                                                                                            | Parameters                                                   | Return            |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ----------------- |
-| `isLeafFunction`          | Some element Function, SubFunction, EqFunction or EqSubFunction.&#xD;&#xA;Returns whether the element is a leaf function acc. to IEC 61850-6-100                       | `element: Element \| null`                                   | `boolean`         |
-| `getNonLeafParent`        | Returns closest non-leaf function type parent element                                                                                                                  | `element: Element \| null`                                   | `Element \| null` |
-| `getFunctionNamingPrefix` | Returns prefix of LNode element acc. to IEC 61850-6-100                                                                                                                | `lNode: Element`                                             | `string`          |
-| `getUniqueFunctionName`   | Returns a unique name for the given element. If the name already exists the parents name will be added as a prefix. This happens recursively until the name is unique. | `element: Element`                                           | `string`          |
-| `getSpecificationIED`     | Returns schema valid SPECIFICATION type IED based on virtualIED object                                                                                                 | `ownerDocument: Document, virtualIED: VirtualIEDDescription` | `Element`         |
-
-<hr/>
-
-### Exports
-
-| Kind | Name                      | Declaration             | Module            | Package |
-| ---- | ------------------------- | ----------------------- | ----------------- | ------- |
-| `js` | `isLeafFunction`          | isLeafFunction          | src/foundation.ts |         |
-| `js` | `getNonLeafParent`        | getNonLeafParent        | src/foundation.ts |         |
-| `js` | `getFunctionNamingPrefix` | getFunctionNamingPrefix | src/foundation.ts |         |
-| `js` | `getUniqueFunctionName`   | getUniqueFunctionName   | src/foundation.ts |         |
-| `js` | `getSpecificationIED`     | getSpecificationIED     | src/foundation.ts |         |
-
 ## `src/virtual-template-ied.ts`:
 
 ### class: `VirtualTemplateIED`, `virtual-template-ied`
@@ -90,19 +66,6 @@ To run a local development server that serves the basic demo located in `index.h
 | Name  | Privacy | Description                     | Parameters | Return          | Inherited From |
 | ----- | ------- | ------------------------------- | ---------- | --------------- | -------------- |
 | `run` |         | Run method to start the plugin. |            | `Promise<void>` |                |
-
-<details><summary>Private API</summary>
-
-#### Methods
-
-| Name              | Privacy | Description | Parameters                                                 | Return             | Inherited From |
-| ----------------- | ------- | ----------- | ---------------------------------------------------------- | ------------------ | -------------- |
-| `onPrimaryAction` | private |             | `functions: Record<string, FunctionElementDescription>`    | `void`             |                |
-| `onClosed`        | private |             | `ae: CustomEvent<{ action: string } \| null>`              | `void`             |                |
-| `renderLLN0s`     | private |             | `functionID: string, lLN0Types: Element[], lNode: Element` | `TemplateResult`   |                |
-| `renderLNodes`    | private |             | `lNodes: Element[], disabled: boolean`                     | `TemplateResult[]` |                |
-
-</details>
 
 <hr/>
 
