@@ -121,7 +121,7 @@ export default class VirtualTemplateIED extends LitElement {
   @property({ type: Number })
   editCount = -1;
 
-  /** Returns true if the manufacturer input contains value. */
+  /** @ignore Returns true if the manufacturer input contains value. */
   @state()
   get isValidManufacturer(): boolean {
     const manufacturer = this.dialog?.querySelector<OscdTextfield>(
@@ -131,7 +131,7 @@ export default class VirtualTemplateIED extends LitElement {
     return (manufacturer && manufacturer !== '') || false;
   }
 
-  /** Returns true if the access point input contains value. */
+  /** @ignore Returns true if the access point input contains value. */
   @state()
   get isValidApName(): boolean {
     const apName = this.dialog?.querySelector<OscdTextfield>(
@@ -141,37 +141,37 @@ export default class VirtualTemplateIED extends LitElement {
     return (apName && apName !== '') || false;
   }
 
-  /** Returns true if an LNode is selected in the list. */
+  /** @ignore Returns true if an LNode is selected in the list. */
   @state()
   get someItemsSelected(): boolean {
     if (!this.selectedLNodeItems) return false;
     return !!this.selectedLNodeItems.length;
   }
 
-  /** Returns true if manufacturer and access point fields contain value and if atleast 1 LNode is selected in the list. */
+  /** @ignore Returns true if manufacturer and access point fields contain value and if atleast 1 LNode is selected in the list. */
   @state()
-  get validPriparyAction(): boolean {
+  get validPrimaryAction(): boolean {
     return (
       this.someItemsSelected && this.isValidManufacturer && this.isValidApName
     );
   }
 
-  /** Returns an array of Logical Nodes that have no reference to a IED and can therfore be used for the virtual IED. */
+  /** @ignore Returns an array of Logical Nodes that have no reference to a IED and can therfore be used for the virtual IED. */
   get unreferencedLNodes(): Element[] {
     return Array.from(
       this.doc.querySelectorAll('LNode[iedName="None"]')
     ).filter(lNode => lNode.getAttribute('lnClass') !== 'LLN0');
   }
 
-  /** Returns an array of LLN0 Logical Nodes. */
+  /** @ignore Returns an array of LLN0 Logical Nodes. */
   get lLN0s(): Element[] {
     return Array.from(this.doc.querySelectorAll('LNodeType[lnClass="LLN0"]'));
   }
 
-  /** The dialog in which the user can create a virtual template IED. */
+  /** @ignore The dialog in which the user can create a virtual template IED. */
   @query('mwc-dialog') dialog!: Dialog;
 
-  /** A list of LNode items that are selected. */
+  /** @ignore A list of LNode items that are selected. */
   @queryAll('mwc-check-list-item[selected]')
   selectedLNodeItems?: CheckListItem[];
 
@@ -340,7 +340,7 @@ export default class VirtualTemplateIED extends LitElement {
         style="--mdc-theme-primary: var(--mdc-theme-error)"
       ></mwc-button>
       <mwc-button
-        ?disabled=${!this.validPriparyAction}
+        ?disabled=${!this.validPrimaryAction}
         slot="primaryAction"
         icon="save"
         label="save"
