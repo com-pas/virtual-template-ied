@@ -1,0 +1,29 @@
+## editors
+/.idea
+/.vscode
+
+## system files
+.DS_Store
+
+## npm
+/node_modules/
+/npm-debug.log
+
+## failed screenshots
+/screenshots/*/failed/
+
+## testing
+/coverage/
+
+## local debug
+/.npmrc
+
+## temp folders
+/.tmp/
+
+# build
+/_site/
+/out-tsc/
+
+storybook-static
+custom-elements.json
