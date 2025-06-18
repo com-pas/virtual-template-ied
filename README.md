@@ -1,3 +1,6 @@
+# Repository is archived, reach out if this needs to be undone.
+
+
 ## Virtual Template IED Plugin
 
 IED generation menu plugin for CoMPAS Open SCD (next)
